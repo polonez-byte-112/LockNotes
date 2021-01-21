@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <item
+        android:id="@+id/nav_home_item"
+        android:icon="@drawable/ic_home"
+        android:iconTint="@color/project_blue"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_login_item"
+        android:icon="@drawable/ic_person"
+        android:title="Log in" />
+
+
+    <item
+        android:id="@+id/nav_logout_item"
+        android:icon="@drawable/ic_arrow_to_right"
+        android:iconTint="@color/project_blue"
+        android:title="Log out" />
+
+
+    <item
+        android:id="@+id/nav_fav_item"
+        android:icon="@drawable/ic_favorites"
+        android:iconTint="@color/project_blue"
+        android:title="Favorites" />
+
+</menu>
