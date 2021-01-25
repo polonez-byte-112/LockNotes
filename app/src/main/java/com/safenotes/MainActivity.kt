@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
+import com.safenotes.fragments.login.LoginFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -29,10 +30,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val headerView: View
         headerView = navigationView.getHeaderView(0)
 
-        //Dokonczyc jutro ( kolory ikonek w menu)
+        //Dokonczyc jutro
         //Dodac tez fragmenty z logowaniem i rejestracja
         //Kazdy ma miec swoje view modele
-        
+
 
         toogle = ActionBarDrawerToggle(this, drawerLayout, R.string.open_menu, R.string.close_menu)
         drawerLayout.addDrawerListener(toogle)
@@ -40,6 +41,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+        if(savedInstanceState==null){
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
+
+        }
 
 
     }
