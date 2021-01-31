@@ -8,29 +8,32 @@
     android:theme="@style/ThemeOverlay.AppCompat.Light">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_header_imageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/nav_header_textView3"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/notepad_icon" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/nav_header_textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/nunito_italic"
-        android:text='"Pen is the tounge\n of the mind"'
+        android:text='"The pen is the tounge\n of the mind"'
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/nav_header_imageView"
+        app:layout_constraintTop_toTopOf="@+id/nav_header_imageView" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/nav_header_textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -40,10 +43,10 @@
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/nav_header_imageView" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -54,16 +57,16 @@
         android:textColor="@color/project_dark_red"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/nav_header_textView4" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/nav_header_textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_bold"
         android:text=" ~Horace "
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintEnd_toEndOf="@+id/nav_header_textView3"
+        app:layout_constraintTop_toBottomOf="@+id/nav_header_textView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

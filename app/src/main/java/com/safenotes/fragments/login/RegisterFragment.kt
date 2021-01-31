@@ -1,14 +1,24 @@
 package com.safenotes.fragments.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.safenotes.R
+import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_register.view.*
 
 
 class RegisterFragment : Fragment() {
+    private lateinit var database: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -16,7 +26,75 @@ class RegisterFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
       var view =  inflater.inflate(R.layout.fragment_register, container, false)
+
+
+        mAuth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
+
+
+
+
+        view.register_continue_btn.setOnClickListener {
+            //Sprawdzenie danych dodac
+            var email = register_input_email.text.toString()
+            var password = register_input_password.text.toString()
+            var passwordTwo = register_input_again_password.text.toString()
+            email.toLowerCase().capitalize()
+            password.toLowerCase().capitalize()
+            passwordTwo.toLowerCase().capitalize()
+
+
+
+
+            if(checkData(email,password, passwordTwo)){
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+
+                    if(it.isSuccessful){
+                        Toast.makeText(requireContext(), "Added User", Toast.LENGTH_SHORT).show()
+                        //Dodac tez do firebase db
+                    }else{
+                        Toast.makeText(requireContext(), "Error while adding User", Toast.LENGTH_SHORT).show()
+                        it.exception?.printStackTrace()
+                    }
+
+                }
+            }
+
+        }
+
         return view
+    }
+
+    private fun checkData(email: String, password: String, passwordTwo: String): Boolean {
+            if(email.isNotEmpty() && password.isNotEmpty() && passwordTwo.isNotEmpty()){
+
+                                if(email.length>10 && password.length>4 && passwordTwo.length > 4){
+                                        if(password !=passwordTwo){
+                                            Toast.makeText(requireContext(), "Wrong passwords", Toast.LENGTH_SHORT).show()
+                                            return false
+                                        }else{
+                                            //Teraz Sprawdzamy email
+
+                                               var isValidEmail = !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+                                            if(isValidEmail==false){
+                                                Toast.makeText(requireContext(), "Wrong email", Toast.LENGTH_SHORT).show()
+                                            }
+                                            println("Email is : $isValidEmail" )
+                                            return isValidEmail
+
+                                        }
+                                }
+                                else {
+                                    Toast.makeText(requireContext(), "Required Length : \nEmail 10+\nPassword 4+", Toast.LENGTH_SHORT).show()
+                                    return false
+                                }
+            }else{
+                Toast.makeText(requireContext(), "Fill all forms", Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+
     }
 
 
