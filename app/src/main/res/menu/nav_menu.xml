@@ -7,26 +7,27 @@
     <item
         android:id="@+id/nav_home_item"
         android:icon="@drawable/ic_home"
-        android:iconTint="@color/project_blue"
+        android:visible="false"
         android:title="Home" />
 
     <item
         android:id="@+id/nav_login_item"
         android:icon="@drawable/ic_person"
+        android:visible="true"
         android:title="Log in" />
-
-
-    <item
-        android:id="@+id/nav_logout_item"
-        android:icon="@drawable/ic_arrow_to_right"
-        android:iconTint="@color/project_blue"
-        android:title="Log out" />
 
 
     <item
         android:id="@+id/nav_fav_item"
         android:icon="@drawable/ic_favorites"
-        android:iconTint="@color/project_blue"
+        android:visible="false"
         android:title="Favorites" />
+
+
+    <item
+        android:id="@+id/nav_logout_item"
+        android:icon="@drawable/ic_arrow_to_right"
+        android:visible="false"
+        android:title="Log out" />
 
 </menu>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "773211787286",
+    "project_id": "locknotes-d91b0",
+    "storage_bucket": "locknotes-d91b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773211787286:android:6c90a5068752a41ee9e537",
+        "android_client_info": {
+          "package_name": "com.safenotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773211787286-a76cfa8nh3uckl7tir7b3f9qpat2qeru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiFDIAcg8O0Q2voCx2ckFQYNTYbQqoXZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773211787286-a76cfa8nh3uckl7tir7b3f9qpat2qeru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

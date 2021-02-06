@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LockNotes">
         <activity android:name=".MainActivity"
-            android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light">
+
+            android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
