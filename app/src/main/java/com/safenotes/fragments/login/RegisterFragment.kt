@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.safenotes.MainActivity
 import com.safenotes.R
+import com.safenotes.fragments.walkthrough.WalkthroughFragment
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_register.view.*
 
@@ -51,6 +53,8 @@ class RegisterFragment : Fragment() {
 
                     if(it.isSuccessful){
                         Toast.makeText(requireContext(), "Added User", Toast.LENGTH_SHORT).show()
+                        (activity as MainActivity).updateUI()
+                        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, WalkthroughFragment())?.commit()
                         //Dodac tez do firebase db
                     }else{
                         Toast.makeText(requireContext(), "Error while adding User", Toast.LENGTH_SHORT).show()

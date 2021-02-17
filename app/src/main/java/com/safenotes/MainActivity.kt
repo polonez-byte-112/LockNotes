@@ -32,9 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
 
-
-        val navigationView: NavigationView
-        navigationView = findViewById(R.id.nav_view)
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.itemIconTintList=null
         navigationView.setNavigationItemSelectedListener(this)
 
@@ -56,7 +54,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if(savedInstanceState==null){
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
-
         }
 
         updateUI()
@@ -76,6 +73,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .signOut(this) // context
                         .addOnCompleteListener {
                             updateUI()
+                            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment())?.commit()
+
                         }
             }
 

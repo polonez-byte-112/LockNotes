@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.safenotes.MainActivity
+import com.safenotes.R
+import com.safenotes.fragments.notes.NotesFragment
 
 class LoginFragmentViewModel:  ViewModel() {
 
@@ -24,10 +26,8 @@ class LoginFragmentViewModel:  ViewModel() {
       if(checkData(context,email,password)){
           mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
               if(it.isSuccessful){
-                  Toast.makeText(context, "Welcome $email",Toast.LENGTH_SHORT).show()
-                          activity.updateUI()
-
-
+                  activity.updateUI()
+                  activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, NotesFragment())?.commit()
 
               }else{
                   Toast.makeText(context, "Wrong email or password",Toast.LENGTH_SHORT).show()
