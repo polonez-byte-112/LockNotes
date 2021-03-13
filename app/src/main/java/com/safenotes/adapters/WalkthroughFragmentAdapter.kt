@@ -1,4 +1,4 @@
-package com.safenotes.fragments.walkthrough.adapter
+package com.safenotes.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

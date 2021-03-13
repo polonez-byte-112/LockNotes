@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/project_white"
+            android:backgroundTint="@color/project_dark_white"
             android:clickable="true"
             android:src="@drawable/ic_arrow_left_to_right"
             app:elevation="10dp"

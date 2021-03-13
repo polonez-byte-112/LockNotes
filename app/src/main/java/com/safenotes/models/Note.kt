@@ -1,9 +1,8 @@
 package com.safenotes.models
 
-import java.util.*
-
 data class Note(
-    var name: String,
-    val text : String,
-    val date: Date
+        var note_user_id: String,
+        var note_name: String,
+        val note_text: String,
+        val note_date: String
 )

@@ -1,5 +1,6 @@
 package com.safenotes
 
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.safenotes.fragments.login.LoginFragment
+import com.safenotes.fragments.notes.NotesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -50,11 +52,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toogle.syncState()
 
 
+        database = FirebaseDatabase.getInstance().reference
+        mAuth = FirebaseAuth.getInstance()
 
 
-        if(savedInstanceState==null){
+        if(savedInstanceState==null ){
+
+            if(mAuth.currentUser==null){
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
+           }else{
+           supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+            }
+
         }
+
+
+
+
+
 
         updateUI()
     }
@@ -62,9 +77,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
+
         when(item.itemId){
             R.id.nav_login_item -> {
-                Toast.makeText(applicationContext, "Login clicked",Toast.LENGTH_SHORT).show()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment())?.commit()
             }
 
             R.id.nav_logout_item->{
@@ -75,14 +91,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             updateUI()
                             supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment())?.commit()
 
+
                         }
             }
 
             R.id.nav_home_item->{
-                Toast.makeText(applicationContext, "Home clicked",Toast.LENGTH_SHORT).show()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment())?.commit()
             }
             R.id.nav_fav_item->{
-                Toast.makeText(applicationContext, "Favorite clicked",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Favorite clicked\nImplement that later.",Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.safenotes.R
-import com.safenotes.fragments.walkthrough.adapter.WalkthroughFragmentAdapter
+import com.safenotes.adapters.WalkthroughFragmentAdapter
 
 
 class WalkthroughFragment : Fragment() {
@@ -96,8 +96,8 @@ class WalkthroughFragment : Fragment() {
         mDots = Array(3) { i -> (TextView(context)) }
         mDotsLayout.removeAllViews()
 
-        var dark_passive = ResourcesCompat.getColor(resources,R.color.project_dark_passive, null)
-        var dark_active = ResourcesCompat.getColor(resources,R.color.project_dark_active, null)
+        var dark_passive = ResourcesCompat.getColor(resources,R.color.project_light_gray, null)
+        var dark_active = ResourcesCompat.getColor(resources,R.color.project_dark_grey, null)
         mDots.forEachIndexed { index, textView ->
             mDots[index] = TextView(requireContext())
             mDots[index].text= Html.fromHtml("&#8226;")

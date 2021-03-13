@@ -7,9 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="project_white">#f1f1f1</color>
-    <color name="project_light_red">#FF2435</color>
-    <color name="project_dark_red">#C60A0A</color>
-    <color name="project_dark_passive">#4a4a4a</color>
-    <color name="project_dark_active">#313131</color>
+
+    <color name="project_dark_white">#f1f1f1</color>
+    <color name="project_light_white">#fcfcfc</color>
+
+    <color name="project_most_light_red">#f2d0d2</color>
+    <color name="project_light_red">#be171e</color>
+    <color name="project_dark_red">#981218</color>
+    <!--
+     I fixed red  colors becouse my main screen isnt calibrated enough.
+     But i dont think that fix problem entirely.
+
+
+      -->
+    <color name="project_light_gray">#4a4a4a</color>
+    <color name="project_dark_grey">#313131</color>
 </resources>
