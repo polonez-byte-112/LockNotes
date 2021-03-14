@@ -12,8 +12,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.safenotes.R
 import com.safenotes.adapters.WalkthroughFragmentAdapter
+import com.safenotes.fragments.notes.NotesFragment
+import com.safenotes.models.Amount
 
 
 class WalkthroughFragment : Fragment() {
@@ -25,6 +30,8 @@ class WalkthroughFragment : Fragment() {
     private    lateinit var mDotsLayout: LinearLayout
     private  lateinit var nextBtn  : Button
     private  lateinit var backBtn  : Button
+    private lateinit var database: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,6 +45,9 @@ class WalkthroughFragment : Fragment() {
         viewPager.adapter=slideAdapter
         addDots(0)
 
+
+        database = FirebaseDatabase.getInstance().reference
+        mAuth = FirebaseAuth.getInstance()
 
         viewPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -85,7 +95,25 @@ class WalkthroughFragment : Fragment() {
         }
 
         nextBtn.setOnClickListener {
+        var newAmount=0
+
+            if(currentPage+1==3){
+                var amount = Amount(mAuth.currentUser?.uid.toString(), newAmount.toString())
+
+                database.child("amounts").child(mAuth.currentUser?.uid.toString()).setValue(amount).addOnCompleteListener {
+
+                    if(it.isSuccessful){
+                        println("Set new amount : $newAmount")
+                    }else{
+                        println("Error while setting new amount : $newAmount")
+                    }
+
+                }
+
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, NotesFragment())?.commit()
+            }
             viewPager.setCurrentItem(currentPage+1)
+
         }
 
 
