@@ -91,7 +91,7 @@ class WalkthroughFragment : Fragment() {
         nextBtn = view.findViewById(R.id.walkthrough_next_btn) as Button
 
         backBtn.setOnClickListener {
-            viewPager.setCurrentItem(currentPage-1)
+            viewPager.currentItem = currentPage-1
         }
 
         nextBtn.setOnClickListener {
@@ -112,7 +112,7 @@ class WalkthroughFragment : Fragment() {
 
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, NotesFragment())?.commit()
             }
-            viewPager.setCurrentItem(currentPage+1)
+            viewPager.currentItem = currentPage+1
 
         }
 

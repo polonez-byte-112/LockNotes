@@ -27,7 +27,7 @@ class LoginFragmentViewModel:  ViewModel() {
           mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
               if(it.isSuccessful){
                   activity.updateUI()
-                  activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, NotesFragment())?.commit()
+                  activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
 
               }else{
                   Toast.makeText(context, "Wrong email or password",Toast.LENGTH_SHORT).show()

@@ -1,6 +1,5 @@
 package com.safenotes
 
-import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +15,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.safenotes.fragments.login.LoginFragment
 import com.safenotes.fragments.notes.NotesFragment
+import com.safenotes.models.Note
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var database: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
-
+    var note_list:ArrayList<Note> =  ArrayList()
 
 
 
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when(item.itemId){
             R.id.nav_login_item -> {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment())?.commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
             }
 
             R.id.nav_logout_item->{
@@ -89,14 +89,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .signOut(this) // context
                         .addOnCompleteListener {
                             updateUI()
-                            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment())?.commit()
+                            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
 
 
                         }
             }
 
             R.id.nav_home_item->{
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment())?.commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
             }
             R.id.nav_fav_item->{
                 Toast.makeText(applicationContext, "Favorite clicked\nImplement that later.",Toast.LENGTH_SHORT).show()
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if(mAuth.currentUser!=null) {
 
-            displayed_email.setText(mAuth.currentUser!!.email.toString())
+            displayed_email.text = mAuth.currentUser!!.email.toString()
             displayed_email.textSize = 18F
 
 
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             nav_menu.findItem(R.id.nav_logout_item).isVisible = true
         }else{
 
-                displayed_email.setText("Guest")
+            displayed_email.text = "Guest"
                 displayed_email.textSize= 30F
 
 
