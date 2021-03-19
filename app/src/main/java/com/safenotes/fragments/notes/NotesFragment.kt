@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.safenotes.MainActivity
 import com.safenotes.R
 import com.safenotes.adapters.NotesFragmentAdapter
+import com.safenotes.models.Note
 import kotlinx.android.synthetic.main.fragment_notes.view.*
 
 
@@ -22,14 +23,15 @@ class NotesFragment : Fragment() {
      var view = inflater.inflate(R.layout.fragment_notes, container, false)
 
 
-        val adapter = NotesFragmentAdapter((activity as MainActivity).note_list)
+        val adapter = NotesFragmentAdapter((activity as MainActivity).note_list, activity as MainActivity)
          adapter.downloadNote(activity as MainActivity)
 
         view.notes_recycler_view.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         view.notes_recycler_view.adapter = adapter
 
         view.notes_floating_btn_add_note.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, EditNoteFragment())?.commit()
+            val tab = ArrayList<Note>()
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, EditNoteFragment(0,tab,0))?.commit()
         }
 
 

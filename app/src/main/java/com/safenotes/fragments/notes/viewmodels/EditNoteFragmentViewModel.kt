@@ -45,6 +45,8 @@ class EditNoteFragmentViewModel: ViewModel(){
 
 
                                         database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_amount").setValue(newAmount).addOnCompleteListener {
+                                            newAmount=0
+                                            //We clear locally amount and download new one at begin of process
                                             activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
                                         }
 
@@ -72,6 +74,40 @@ class EditNoteFragmentViewModel: ViewModel(){
         }
     }
 
+    fun editNote(mainActivity: MainActivity, arrayList: ArrayList<Note> , position: Int, title: String, text: String) {
+
+        database = FirebaseDatabase.getInstance().reference
+        mAuth = FirebaseAuth.getInstance()
+
+        val current = Calendar.getInstance().time
+
+        //We overwrite local file right now and later we will file on database
+
+
+        arrayList[position].note_name=title
+        arrayList[position].note_date=current.toString()
+        arrayList[position].note_text=text
+
+        //Update on Firebase
+
+        var editedNote = Note( arrayList[position].note_name, arrayList[position].note_text,  arrayList[position].note_date)
+        database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).setValue(editedNote).addOnCompleteListener {
+            if(it.isSuccessful){
+                println("We updated note!")
+                arrayList.clear()
+            }else{
+                println("We didnt updated note!")
+            }
+            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+        }
+
+
+
+
+
+
+
+    }
 
 
 }

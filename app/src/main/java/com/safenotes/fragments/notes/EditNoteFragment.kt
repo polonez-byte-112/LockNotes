@@ -14,10 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.safenotes.MainActivity
 import com.safenotes.R
 import com.safenotes.fragments.notes.viewmodels.EditNoteFragmentViewModel
+import com.safenotes.models.Note
 import kotlinx.android.synthetic.main.fragment_edit_note.view.*
 
 
-class EditNoteFragment : Fragment() {
+class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var position: Int) : Fragment() {
 
     lateinit var vm : ViewModel
     lateinit var titleEditText: EditText
@@ -51,10 +52,23 @@ class EditNoteFragment : Fragment() {
         paste_btn_behavior(view)
 
 
+        //We check here if we are going to update current note
+
+        if(state==1){
+            view.edit_note_title.setText(lista[position].note_name)
+            view.edit_note_text.setText(lista[position].note_text)
+        }
 
         view.edit_note_save_btn.setOnClickListener {
-            (vm as EditNoteFragmentViewModel).addNotes(activity as MainActivity,titleEditText.text.toString(),textEditText.text.toString())
-        }
+
+            if(state==0) {
+                (vm as EditNoteFragmentViewModel).addNotes(activity as MainActivity, titleEditText.text.toString(), textEditText.text.toString())
+            }else{
+                //Other fun for posting edited note
+                (vm as EditNoteFragmentViewModel).editNote(activity as MainActivity,lista, position, titleEditText.text.toString(), textEditText.text.toString())
+            }
+
+            }
 
         view.edit_note_paste_btn.setOnClickListener {
             if(textEditText.isFocused){
@@ -65,6 +79,9 @@ class EditNoteFragment : Fragment() {
                 titleEditText.text.insert(titleEditText.selectionStart, paste_text)
             }
         }
+
+
+
 
 
 

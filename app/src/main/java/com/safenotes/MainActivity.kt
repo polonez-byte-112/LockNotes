@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.itemIconTintList=null
         navigationView.setNavigationItemSelectedListener(this)

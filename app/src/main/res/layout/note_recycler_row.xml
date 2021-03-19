@@ -1,51 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/note_recycler_row_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/note_recycler_row_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/nunito_semibold"
-        android:text="Lorem Ipsum"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/note_recycler_row_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/nunito"
-        android:text="Thursday 19:58:20 16.03.2021"
-        android:textColor="#636161"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/note_recycler_row_title"
-        app:layout_constraintTop_toBottomOf="@+id/note_recycler_row_title" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/note_recycler_row_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/note_recycler_row_text"
+        <TextView
+            android:id="@+id/note_recycler_row_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="50dp"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="Lorem Ipsum"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/note_recycler_row_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/note_recycler_row_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/note_recycler_row_title"
+            app:layout_constraintTop_toTopOf="@+id/note_recycler_row_title"
+            app:srcCompat="@drawable/ic_three_dots_vertical" />
+
+        <TextView
+            android:id="@+id/note_recycler_row_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/nunito"
+            android:text="Thursday 19:58:20 16.03.2021"
+            android:textColor="#636161"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/note_recycler_row_title"
+            app:layout_constraintTop_toBottomOf="@+id/note_recycler_row_title" />
+
+        <TextView
+            android:id="@+id/note_recycler_row_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/nunito_light"
+            android:paddingBottom="40dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/note_recycler_row_date"
+            app:layout_constraintTop_toBottomOf="@+id/note_recycler_row_date" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/note_recycler_view_settings_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/nunito_light"
-        android:paddingBottom="40dp"
-        android:text="@string/lorem_ipsum"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/note_recycler_row_date"
-        app:layout_constraintTop_toBottomOf="@+id/note_recycler_row_date" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_alignTop="@id/note_recycler_row_box"
+        android:layout_alignBottom="@id/note_recycler_row_box"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/note_recycler_view_settings_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#4C4C4B"
+                app:srcCompat="@drawable/ic_delete" />
+
+            <ImageButton
+                android:id="@+id/note_recycler_view_settings_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#4C4C4B"
+                app:srcCompat="@drawable/ic_edit" />
+
+            <ImageButton
+                android:id="@+id/note_recycler_view_settings_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#4C4C4B"
+                app:srcCompat="@drawable/ic_baseline_cancel_24" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
