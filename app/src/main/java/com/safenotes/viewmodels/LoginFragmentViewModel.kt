@@ -1,4 +1,4 @@
-package com.safenotes.fragments.login.viewmodels
+package com.safenotes.viewmodels
 
 import android.content.Context
 import android.text.TextUtils

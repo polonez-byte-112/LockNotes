@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.safenotes.MainActivity
 import com.safenotes.R
-import com.safenotes.fragments.login.viewmodels.LoginFragmentViewModel
+import com.safenotes.viewmodels.LoginFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
 

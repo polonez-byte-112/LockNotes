@@ -98,7 +98,7 @@ class WalkthroughFragment : Fragment() {
         var newAmount=0
 
             if(currentPage+1==3){
-                var amount = Amount(mAuth.currentUser?.uid.toString(), newAmount.toString())
+                var amount = Amount(mAuth.currentUser?.uid.toString(), newAmount.toString(),"0")
 
                 database.child("amounts").child(mAuth.currentUser?.uid.toString()).setValue(amount).addOnCompleteListener {
 

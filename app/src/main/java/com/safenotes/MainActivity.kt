@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.safenotes.fragments.favorites.FavoritesFragment
 import com.safenotes.fragments.login.LoginFragment
 import com.safenotes.fragments.notes.NotesFragment
 import com.safenotes.models.Note
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var database: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
     var note_list:ArrayList<Note> =  ArrayList()
-
+    var fav_list:ArrayList<Note> =  ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
             }
             R.id.nav_fav_item->{
-                Toast.makeText(applicationContext, "Favorite clicked\nImplement that later.",Toast.LENGTH_SHORT).show()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FavoritesFragment()).commit()
             }
         }
 

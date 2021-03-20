@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="100dp"
             android:fontFamily="@font/nunito_semibold"
             android:text="Lorem Ipsum"
             android:textColor="#000000"
@@ -25,17 +25,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/note_recycler_row_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="@+id/note_recycler_row_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/note_recycler_row_title"
-            app:layout_constraintTop_toTopOf="@+id/note_recycler_row_title"
-            app:srcCompat="@drawable/ic_three_dots_vertical" />
 
         <TextView
             android:id="@+id/note_recycler_row_date"
@@ -56,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="50dp"
             android:fontFamily="@font/nunito_light"
             android:paddingBottom="40dp"
             android:text="@string/lorem_ipsum"
@@ -66,6 +55,32 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/note_recycler_row_date"
             app:layout_constraintTop_toBottomOf="@+id/note_recycler_row_date" />
+
+        <ImageButton
+            android:id="@+id/note_recycler_row_favorite_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/note_recycler_row_title"
+            app:layout_constraintEnd_toStartOf="@+id/note_recycler_row_settings"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/note_recycler_row_title"
+            app:layout_constraintTop_toTopOf="@+id/note_recycler_row_title"
+            app:srcCompat="@drawable/ic_heart_passive" />
+
+        <ImageButton
+            android:id="@+id/note_recycler_row_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/note_recycler_row_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/note_recycler_row_favorite_btn"
+            app:layout_constraintTop_toTopOf="@+id/note_recycler_row_title"
+            app:layout_constraintVertical_bias="0.529"
+            app:srcCompat="@drawable/ic_three_dots_vertical" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

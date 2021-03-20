@@ -1,4 +1,4 @@
-package com.safenotes.viewmodel
+package com.safenotes.viewmodels
 
 import androidx.lifecycle.ViewModel
 

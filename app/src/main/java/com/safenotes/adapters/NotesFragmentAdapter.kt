@@ -17,7 +17,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
     private lateinit var database: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
     var local_amount_notes=0
-
+    var amount_fav=0
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var local_title = itemView.note_recycler_row_title
@@ -30,6 +30,8 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
         var local_settings_delete =itemView.note_recycler_view_settings_delete
         var local_settings_edit = itemView.note_recycler_view_settings_edit
         var local_settings_cancel = itemView.note_recycler_view_settings_cancel
+
+        var local_fav_btn = itemView.note_recycler_row_favorite_btn
 
     }
 
@@ -46,6 +48,8 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
         holder.local_text.text=list[position].note_text
 
 
+        holder.local_settings_btn.visibility=View.VISIBLE
+
         holder.local_settings_box.setBackgroundColor(Color.argb(200, 255, 255, 252))
 
         holder.local_settings_btn.setOnClickListener {
@@ -59,7 +63,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
 
         holder.local_settings_edit.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, EditNoteFragment(1, list, position))?.commit()
+            activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, EditNoteFragment(1, list, position)).commit()
         }
 
         holder.local_settings_cancel.setOnClickListener {
@@ -67,13 +71,140 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
         }
 
+        //We download normal state
+        database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    var  str_state = snapshot.child("note_is_fav").value.toString()
+                    var state = Integer.parseInt(str_state)
+
+                    if(state==1){
+                        holder.local_fav_btn.setImageResource(R.drawable.ic_heart_active)
+
+                    }else if(state==0){
+                        holder.local_fav_btn.setImageResource(R.drawable.ic_heart_passive)
+                    }
+
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
+
+        holder.local_fav_btn.setOnClickListener {
+
+            //We check state from base
+
+            database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var str_state = snapshot.child("note_is_fav").value.toString()
+                        var state = Integer.parseInt(str_state)
+
+                        //Now we switch depending on state
+
+                        if (state == 0) {
+                            holder.local_fav_btn.setImageResource(R.drawable.ic_heart_active)
+                            state++
+                            list[position].note_is_fav="1"
+
+                            //We change state here
+                            database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position + 1).toString()).child("note_is_fav").setValue(state.toString()).addOnCompleteListener {
+
+                                if(it.isSuccessful){
+                                    //Here we will add note to fav
+
+
+                                    var fav_note = list[position]
+
+
+                                    //Fix here adding note not by position by only a amount from internet
+                                    database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+
+                                            if (snapshot.exists()) {
+                                                var str_amount_of_fav = snapshot.child("amount_fav").value.toString()
+                                                amount_fav = Integer.parseInt(str_amount_of_fav)
+
+
+                                                database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child((amount_fav + 1).toString()).setValue(fav_note).addOnCompleteListener {
+                                                    if (it.isSuccessful) {
+                                                        println("We added note to fav!")
+                                                        //Now we take current amount and update it ++
+
+                                                        database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                                                            override fun onDataChange(snapshot: DataSnapshot) {
+
+                                                                if (snapshot.exists()) {
+                                                                    var str_amount_of_fav_ = snapshot.child("amount_fav").value.toString()
+                                                                     amount_fav = Integer.parseInt(str_amount_of_fav)
+
+                                                                    amount_fav++
+
+                                                                    //Here we update new amount of fav
+                                                                    database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_fav").setValue(amount_fav.toString()).addOnCompleteListener {
+                                                                        if (it.isSuccessful) {
+                                                                            println("We updated amount of fav")
+                                                                        }else{
+                                                                            println("We didnt updated amount of fav")
+                                                                        }
+                                                                    }
+
+
+                                                                }
+
+                                                            }
+
+                                                            override fun onCancelled(error: DatabaseError) {
+                                                                TODO("Not yet implemented")
+                                                            }
+                                                        })
+                                                    }else{
+                                                        println("Error while adding note to fav!")
+                                                    }
+                                                }
+
+                                            }
+
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError) {
+                                            TODO("Not yet implemented")
+                                        }
+                                    })
+
+
+                                }
+                            }
+                        } else if (state == 1)
+                        {
+                            //Here we delete notes from favorites (only from fav)
+                            holder.local_fav_btn.setImageResource(R.drawable.ic_heart_passive)
+                            state--
+                            list[position].note_is_fav="0"
+                            database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position + 1).toString()).child("note_is_fav").setValue(state.toString()).addOnCompleteListener {
+                                //Here we will delete note from fav
+                            }
+                        }
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+        }
+
 
     }
    override fun getItemCount(): Int {
       return list.size
   }
-
-
 
 
 
@@ -100,7 +231,8 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                                     var local_date: String = snapshot.child(i.toString()).child("note_date").value.toString()
                                     var local_title: String = snapshot.child(i.toString()).child("note_name").value.toString()
                                     var local_text: String = snapshot.child(i.toString()).child("note_text").value.toString()
-                                    var local_note = Note(local_title, local_text, local_date)
+                                    var local_is_fav: String = snapshot.child(i.toString()).child("note_is_fav").value.toString()
+                                    var local_note = Note(local_title, local_text, local_date,local_is_fav)
 
                                     println("\n\nId: $i\nDate: $local_date,\nTitle: $local_title,\nText: $local_text\n")
                                     activity.note_list.add(local_note)
@@ -126,7 +258,6 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
 
     }
-
 
     fun deleteNote(holder: MyViewHolder,activity: MainActivity, position: Int){
 
@@ -193,4 +324,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
         })
 
     }
+
+
+
 }
