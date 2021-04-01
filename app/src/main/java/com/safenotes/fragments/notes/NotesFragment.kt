@@ -25,7 +25,6 @@ class NotesFragment : Fragment() {
 
         val adapter = NotesFragmentAdapter((activity as MainActivity).note_list, activity as MainActivity)
          adapter.downloadNote(activity as MainActivity)
-
         view.notes_recycler_view.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         view.notes_recycler_view.adapter = adapter
 

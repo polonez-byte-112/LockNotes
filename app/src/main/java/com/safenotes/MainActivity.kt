@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var database: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
     var note_list:ArrayList<Note> =  ArrayList()
+    var new_fav_list:ArrayList<Note> =  ArrayList()
     var fav_list:ArrayList<Note> =  ArrayList()
 
 

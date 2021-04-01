@@ -25,17 +25,18 @@ class EditNoteFragmentViewModel: ViewModel(){
 
         if(title.isNotEmpty() && text.isNotEmpty()) {
 
-            var note = Note(title, text, current.toString(),"0")
 
             //Step 1. Taking amount
                     database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
-                            var    newAmount = Integer.parseInt(snapshot.child("amount_amount").value.toString())
+                            var newAmount = Integer.parseInt(snapshot.child("amount_amount").value.toString())
                                 amount = Amount(mAuth.currentUser?.uid.toString(), newAmount.toString(),"0")
 
                                 //Step 2. Adding note
+                                var original_id = (newAmount+1).toString()
 
+                                var note = Note(title, text, current.toString(),"0",original_id)
                                 database.child("notes").child(mAuth.currentUser?.uid.toString()).child((newAmount+1).toString()).setValue(note).addOnCompleteListener {
 
                                     if (it.isSuccessful) {
@@ -88,9 +89,10 @@ class EditNoteFragmentViewModel: ViewModel(){
         arrayList[position].note_date=current.toString()
         arrayList[position].note_text=text
 
+
         //Update on Firebase
 
-        var editedNote = Note( arrayList[position].note_name, arrayList[position].note_text,  arrayList[position].note_date,  arrayList[position].note_is_fav)
+        var editedNote = Note( arrayList[position].note_name, arrayList[position].note_text,  arrayList[position].note_date,  arrayList[position].note_is_fav, arrayList[position].note_original_id)
         database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).setValue(editedNote).addOnCompleteListener {
             if(it.isSuccessful){
                 println("We updated note!")

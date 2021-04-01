@@ -26,8 +26,7 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var view = MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_recycler_row, parent, false))
-        return view
+        return  MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.note_recycler_row, parent, false))
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -49,8 +48,7 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
         //Favourite
 
         holder.local_fav_btn.setOnClickListener {
-            //This place should be delete from fav list and change icon
-            deleteFav(activity,position)
+            deleteFav(position)
         }
 
 
@@ -85,8 +83,9 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
                                var local_date =  snapshot.child(i.toString()).child("note_date").value.toString()
                                var local_text =  snapshot.child(i.toString()).child("note_text").value.toString()
                                var local_fav =  snapshot.child(i.toString()).child("note_is_fav").value.toString()
+                               var local_original_id = snapshot.child(i.toString()).child("note_original_id").value.toString()
 
-                               var local_object = Note(local_title, local_text, local_date, local_fav)
+                               var local_object = Note(local_title, local_text, local_date, local_fav,local_original_id)
                                activity.fav_list.add(local_object)
                            }
 
@@ -112,98 +111,51 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
 
     }
 
+    fun deleteFav(position: Int){
 
-    fun deleteFav(activity: MainActivity, position: Int){
+        database.child("notes").child(mAuth.currentUser?.uid.toString()).child(fav_list[position].note_original_id).child("note_is_fav").setValue("0").addOnCompleteListener {
+            if(it.isSuccessful){
+                database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val local_str = snapshot.child("amount_fav").value.toString()
+                        local_fav_notes = Integer.parseInt(local_str)
 
-        /**
-         *
-         * Naprawic to z usuwaniem.Są tu  problemy z logika
-         * Zobaczyc na problemy z kolejnoscia
-         *
-         * Tez pamietac ze to wyswietla tyle ulub ile jest podanych w amount_fav
-         *
-         * Problem tu jest taki że to usuwa zły obiekt
-         *
-         */
-        local_fav_notes=0
-        var deleted_note = activity.note_list[position]
-        database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    local_fav_notes = Integer.parseInt(snapshot.child("amount_fav").value.toString())
+                        local_fav_notes--
 
-                    local_fav_notes--
+                        database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_fav").setValue(local_fav_notes.toString()).addOnCompleteListener {
+                            if(it.isSuccessful){
+                                database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).removeValue().addOnCompleteListener {
+                                    fav_list.removeAt(position)
+                                    notifyDataSetChanged()
 
-                    //We update new amount in amounts
-                    database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_fav").setValue(local_fav_notes.toString()).addOnCompleteListener {
+                                    database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).removeValue()
 
-                        if (it.isSuccessful) {
+                                    if(local_fav_notes>0){
+                                        for (j in 1..local_fav_notes) {
+                                            println("New amount : $j")
+                                            database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child(j.toString()).setValue(fav_list[j-1])
 
-                            //We change state of real note
-
-                            database.child("notes").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-
-                                    if (snapshot.exists()) {
-                                        for (i in 1 until (local_fav_notes + 2) step 1) {
-                                          var text =   snapshot.child(i.toString()).child("note_date").value.toString()
-                                            if(text == deleted_note.note_date){
-                                                database.child("notes").child(mAuth.currentUser?.uid.toString()).child(i.toString()).child("note_is_fav").setValue("0")
-
-                                                activity.fav_list.removeAt(position)
-
-                                                //Update Firebase DB
-
-
-                                                //Step 3. Delete item with index
-                                                for (h in 1..(local_fav_notes + 2)) {
-                                                    database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child(h.toString()).removeValue().addOnCompleteListener {
-                                                        if (it.isSuccessful) {
-                                                            //Step 4. Update new list
-
-                                                            if(local_fav_notes>0){
-                                                                for (j in 1..local_fav_notes) {
-                                                                    println("New amount : $j")
-                                                                    var indexJ = j-1
-                                                                    database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child(j.toString()).setValue(activity.note_list[(indexJ)]).addOnCompleteListener {
-                                                                        if(it.isSuccessful){
-                                                                            local_fav_notes=0
-
-                                                                        }
-                                                                    }
-
-                                                                }
-                                                            }
-                                                        } else {
-                                                            println("To big last index")
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            //Problem here is displaying by numer, we need to delete from list also to fix that
 
                                         }
-
-
                                     }
-
                                 }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
-                            })
-
-
+                            }
                         }
-                    }
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
             }
-        })
+        }
+
+
+
+
+
 
 
     }
