@@ -265,8 +265,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
         database = FirebaseDatabase.getInstance().reference
         mAuth = FirebaseAuth.getInstance()
 
-
-
+        deleteFavWithNote(activity,position)
         activity.note_list.removeAt(position)
 
 
@@ -288,13 +287,11 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                                 for (i in 1..(local_amount_notes + 1)) {
                                     database.child("notes").child(mAuth.currentUser?.uid.toString()).child(i.toString()).removeValue().addOnCompleteListener {
                                         if (it.isSuccessful) {
-                                            //Step 3.5 Delete fav item if it have any
 
 
                                             //Step 4. Update new list
                                             if (local_amount_notes > 0) {
                                                 for (j in 1..local_amount_notes) {
-                                                    println("New amount : $j")
                                                     var indexJ = j - 1
                                                     activity.note_list[indexJ].note_original_id = j.toString()
                                                     //We need to update here also original id of fav_items
@@ -335,14 +332,6 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
     var fav_adapter =    FavoritesFragmentAdapter(activity.fav_list, activity)
         fav_adapter.downloadFav(activity)
-
-        /**
-         * Krok 1. Pobieramy i ustawiamy ilosc amount_fav o jedno mniejsza
-         * Krok 2. Szukamy w kazdym elemencie w tablicy fav_list czy ma id takie samo jak aktualny obiekt
-         *         Jesli tak to oznacza ze to ten obiekt którego szukamy
-         *
-         * Krok 3. Usuwamy ten obiekt lokalnie a w firebase cała liste, potem dodajemy nowe obiekty z nazwami wiekszymi o 1 (index:0, nazwa:1)
-         */
 
         database.child("notes").child(mAuth.currentUser?.uid.toString()).child((note_position+1).toString()).child("note_is_fav").setValue("0").addOnCompleteListener {
 
@@ -396,6 +385,102 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
     }
 
+
+
+
+    private fun deleteFavWithNote(activity: MainActivity, position: Int){
+
+        /**
+         * Naprawic zmiane note original id po usunie
+         * Dodac Usuwanie fav notatki z fav wraz z oryginalna
+         * Dodac edytowanie fav notatki wraz z oryginalna
+         */
+        database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    if(Integer.parseInt(snapshot.child("note_is_fav").value.toString())==1) {
+                        var fav_adapter = FavoritesFragmentAdapter(activity.fav_list, activity)
+                        fav_adapter.downloadFav(activity)
+
+                        database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).child("note_is_fav").setValue("0").addOnCompleteListener {
+
+
+
+                            if(it.isSuccessful){
+                                database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        if (snapshot.exists()){
+
+                                            local_fav_notes = Integer.parseInt(snapshot.child("amount_fav").value.toString())
+                                            local_fav_notes--
+
+                                            database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_fav").setValue(local_fav_notes).addOnCompleteListener {
+                                                if (it.isSuccessful) {
+
+                                                    activity.fav_list.forEach {
+                                                        if(!it.note_original_id.equals((position+1).toString())){
+                                                            activity.new_fav_list.add(it)
+                                                        }
+                                                    }
+
+
+                                                    database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).removeValue().addOnCompleteListener {
+                                                        if (it.isSuccessful) {
+
+                                                            updateOriginalID(activity)
+                                                        }
+                                                    }
+
+
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("Not yet implemented")
+                                    }
+                                })
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+
+
+    private fun updateOriginalID(activity: MainActivity){
+
+        for(i in 1..activity.note_list.size){
+            for(j in 1..activity.new_fav_list.size){
+
+                if(activity.note_list[i-1].note_date.equals(activity.new_fav_list[j-1].note_date) && activity.note_list[i-1].note_text.equals(activity.new_fav_list[j-1].note_text) &&    activity.note_list[i-1].note_name.equals(activity.new_fav_list[j-1].note_name)  ){
+                    activity.new_fav_list[j-1].note_original_id= activity.note_list[i-1].note_original_id
+                }
+            }
+        }
+
+
+        for (j in 1..activity.new_fav_list.size) {
+            database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child(j.toString()).setValue(activity.new_fav_list[j - 1])
+        }
+
+
+
+        activity.new_fav_list.clear()
+
+
+
+
+
+    }
 
 
 
