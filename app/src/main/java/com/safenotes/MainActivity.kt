@@ -29,6 +29,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var new_fav_list:ArrayList<Note> =  ArrayList()
     var fav_list:ArrayList<Note> =  ArrayList()
 
+    var LOGIN_STATE=false
+    var REGISTER_STATE=false
+    var WALKTHROUGH_STATE=false
+    var NOTE_STATE=false
+    var EDIT_NOTE_STATE=false
+    var FAVORITES_STATE=false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +153,55 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
+    }
+
+    override fun onBackPressed() {
+        println("Register state: $REGISTER_STATE")
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+
+            if(NOTE_STATE==true){
+                NOTE_STATE=false
+                super.onBackPressed()
+            }
+
+            if(LOGIN_STATE==true){
+                LOGIN_STATE=false
+                super.onBackPressed()
+            }
+
+
+            if(WALKTHROUGH_STATE==true){
+                WALKTHROUGH_STATE=false
+                super.onBackPressed()
+            }
+
+
+            if(REGISTER_STATE==true){
+                REGISTER_STATE=false
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
+                LOGIN_STATE=true
+            }
+
+
+
+            if(FAVORITES_STATE==true){
+                FAVORITES_STATE=false
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+                NOTE_STATE=true
+            }
+
+
+            if(EDIT_NOTE_STATE==true){
+                EDIT_NOTE_STATE==false
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+                NOTE_STATE=true
+            }
+
+
+
+        }
     }
 
 }

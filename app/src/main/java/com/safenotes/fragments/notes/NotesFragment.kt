@@ -33,12 +33,13 @@ class NotesFragment : Fragment() {
             activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, EditNoteFragment(0,tab,0))?.commit()
         }
 
-
-
-
-
-
+        (activity as MainActivity).NOTE_STATE=true
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).NOTE_STATE=false
     }
 
 

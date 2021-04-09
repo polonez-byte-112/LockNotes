@@ -80,11 +80,6 @@ class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var positi
             }
         }
 
-
-
-
-
-
         clipboard.addPrimaryClipChangedListener {
             clip = clipboard.primaryClip
 
@@ -101,6 +96,8 @@ class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var positi
             paste_btn_behavior(view)
         }
 
+        (activity as MainActivity).EDIT_NOTE_STATE=true
+
         return view
     }
 
@@ -114,5 +111,10 @@ class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var positi
         }
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).EDIT_NOTE_STATE=false
+    }
 
 }

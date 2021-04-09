@@ -15,10 +15,10 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.safenotes.MainActivity
 import com.safenotes.R
 import com.safenotes.adapters.WalkthroughFragmentAdapter
 import com.safenotes.fragments.notes.NotesFragment
-import com.safenotes.models.Amount
 
 
 class WalkthroughFragment : Fragment() {
@@ -41,10 +41,9 @@ class WalkthroughFragment : Fragment() {
         viewPager = view.findViewById(R.id.walkthrough_ViewPager) as ViewPager
         mDotsLayout =view.findViewById(R.id.walkthrough_dots_layout) as LinearLayout
         slideAdapter = WalkthroughFragmentAdapter(requireContext())
-
+        (activity as MainActivity).WALKTHROUGH_STATE=true
         viewPager.adapter=slideAdapter
         addDots(0)
-
 
         database = FirebaseDatabase.getInstance().reference
         mAuth = FirebaseAuth.getInstance()
@@ -95,21 +94,8 @@ class WalkthroughFragment : Fragment() {
         }
 
         nextBtn.setOnClickListener {
-        var newAmount=0
 
             if(currentPage+1==3){
-                var amount = Amount(mAuth.currentUser?.uid.toString(), newAmount.toString(),"0")
-
-                database.child("amounts").child(mAuth.currentUser?.uid.toString()).setValue(amount).addOnCompleteListener {
-
-                    if(it.isSuccessful){
-                        println("Set new amount : $newAmount")
-                    }else{
-                        println("Error while setting new amount : $newAmount")
-                    }
-
-                }
-
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, NotesFragment())?.commit()
             }
             viewPager.currentItem = currentPage+1
@@ -140,6 +126,13 @@ class WalkthroughFragment : Fragment() {
             mDots[pos].setTextColor(dark_active)
         }
 
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).WALKTHROUGH_STATE=false
     }
 
 

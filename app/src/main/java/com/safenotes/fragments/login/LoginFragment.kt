@@ -31,6 +31,7 @@ class LoginFragment : Fragment() {
 
         view.login_jump_to_register_text_view.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
+                (activity as MainActivity).REGISTER_STATE=true
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, RegisterFragment())?.commit()
             }
 
@@ -40,12 +41,16 @@ class LoginFragment : Fragment() {
             var email = view.login_input_email.text.toString()
             var password = view.login_input_password.text.toString()
             (viewModel as LoginFragmentViewModel).login((activity as MainActivity) ,email,password)
-
-
-
-
         }
+
+        (activity as MainActivity).LOGIN_STATE=true
    return view
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).LOGIN_STATE=false
     }
 
 

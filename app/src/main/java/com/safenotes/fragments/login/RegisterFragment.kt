@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.safenotes.MainActivity
 import com.safenotes.R
 import com.safenotes.fragments.walkthrough.WalkthroughFragment
+import com.safenotes.models.Amount
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_register.view.*
 
@@ -54,6 +55,18 @@ class RegisterFragment : Fragment() {
                     if(it.isSuccessful){
                         Toast.makeText(requireContext(), "Added User", Toast.LENGTH_SHORT).show()
                         (activity as MainActivity).updateUI()
+                        var newAmount=0
+                        var amount = Amount(mAuth.currentUser?.uid.toString(), newAmount.toString(),"0")
+
+                        database.child("amounts").child(mAuth.currentUser?.uid.toString()).setValue(amount).addOnCompleteListener {
+
+                            if(it.isSuccessful){
+                                println("Set new amount : $newAmount")
+                            }else{
+                                println("Error while setting new amount : $newAmount")
+                            }
+
+                        }
                         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, WalkthroughFragment())?.commit()
                         //Dodac tez do firebase db
                     }else{
@@ -102,4 +115,9 @@ class RegisterFragment : Fragment() {
     }
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        (activity as MainActivity).REGISTER_STATE=false
+    }
 }
