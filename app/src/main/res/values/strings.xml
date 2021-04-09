@@ -3,7 +3,6 @@
     <string name="open_menu">Open navigation drawer</string>
     <string name="close_menu">Close navigation drawer</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at velit elementum, iaculis nunc nec, tincidunt purus. Nullam eu pretium ante, sit amet hendrerit ipsum. Cras sollicitudin odio vel nunc tempor, viverra cursus enim condimentum. Pellentesque varius molestie ex, a tincidunt sem gravida non. Duis dictum quam sed molestie consequat. Morbi fermentum posuere orci, eget tempus libero accumsan quis. Pellentesque suscipit congue quam semper dignissim. Quisque faucibus laoreet quam a suscipit. Curabitur facilisis risus condimentum nisi bibendum elementum ut eget eros. Sed eget metus quis lorem sagittis luctus sed non nibh. Aliquam fringilla cursus diam vitae rhoncus. Praesent quis blandit mauris. Nullam nec tempor leo.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

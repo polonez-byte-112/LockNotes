@@ -90,7 +90,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                println(error.message)
             }
         })
 
@@ -161,7 +161,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                                                             }
 
                                                             override fun onCancelled(error: DatabaseError) {
-                                                                TODO("Not yet implemented")
+                                                                println(error.message)
                                                             }
                                                         })
                                                     } else {
@@ -174,7 +174,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                                         }
 
                                         override fun onCancelled(error: DatabaseError) {
-                                            TODO("Not yet implemented")
+                                            println(error.message)
                                         }
                                     })
 
@@ -193,7 +193,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    println(error.message)
                 }
             })
         }
@@ -246,20 +246,19 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
+                            println(error.message)
                         }
                     })
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                println(error.message)
             }
         })
 
 
     }
-
     fun deleteNote(holder: MyViewHolder, activity: MainActivity, position: Int) {
 
         database = FirebaseDatabase.getInstance().reference
@@ -321,13 +320,11 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                println(error.message)
             }
         })
 
     }
-
-
     private fun deleteFavWhileNotes(note_position: Int, activity: MainActivity ) {
 
     var fav_adapter =    FavoritesFragmentAdapter(activity.fav_list, activity)
@@ -376,7 +373,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                        println(error.message)
                     }
                 })
             }
@@ -384,17 +381,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
 
     }
-
-
-
-
     private fun deleteFavWithNote(activity: MainActivity, position: Int){
-
-        /**
-         * Naprawic zmiane note original id po usunie
-         * Dodac Usuwanie fav notatki z fav wraz z oryginalna
-         * Dodac edytowanie fav notatki wraz z oryginalna
-         */
         database.child("notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
@@ -416,7 +403,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
                                             database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_fav").setValue(local_fav_notes).addOnCompleteListener {
                                                 if (it.isSuccessful) {
-
+                                                    activity.new_fav_list.clear()
                                                     activity.fav_list.forEach {
                                                         if(!it.note_original_id.equals((position+1).toString())){
                                                             activity.new_fav_list.add(it)
@@ -439,7 +426,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
-                                        TODO("Not yet implemented")
+                                        println(error.message)
                                     }
                                 })
                             }
@@ -453,9 +440,6 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-
-
-
     private fun updateOriginalID(activity: MainActivity){
 
         for(i in 1..activity.note_list.size){
@@ -481,7 +465,4 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
 
     }
-
-
-
 }

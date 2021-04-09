@@ -69,42 +69,42 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
 
         //Step 1. Take amount of  fav notes
 
-        database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener{
+        database.child("amounts").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     var str_local_fav_notes = snapshot.child("amount_fav").value.toString()
-                    local_fav_notes= Integer.parseInt(str_local_fav_notes)
+                    local_fav_notes = Integer.parseInt(str_local_fav_notes)
 
                     //Here we download evey item
-                    database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object :ValueEventListener{
+                    database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                           for (i in 1 until (local_fav_notes+1) step 1){
-                               var local_title = snapshot.child(i.toString()).child("note_name").value.toString()
-                               var local_date =  snapshot.child(i.toString()).child("note_date").value.toString()
-                               var local_text =  snapshot.child(i.toString()).child("note_text").value.toString()
-                               var local_fav =  snapshot.child(i.toString()).child("note_is_fav").value.toString()
-                               var local_original_id = snapshot.child(i.toString()).child("note_original_id").value.toString()
+                            for (i in 1 until (local_fav_notes + 1) step 1) {
+                                var local_title = snapshot.child(i.toString()).child("note_name").value.toString()
+                                var local_date = snapshot.child(i.toString()).child("note_date").value.toString()
+                                var local_text = snapshot.child(i.toString()).child("note_text").value.toString()
+                                var local_fav = snapshot.child(i.toString()).child("note_is_fav").value.toString()
+                                var local_original_id = snapshot.child(i.toString()).child("note_original_id").value.toString()
 
-                               var local_object = Note(local_title, local_text, local_date, local_fav,local_original_id)
-                               activity.fav_list.add(local_object)
-                           }
+                                var local_object = Note(local_title, local_text, local_date, local_fav, local_original_id)
+                                activity.fav_list.add(local_object)
+                            }
 
                             notifyDataSetChanged()
-                            local_fav_notes=0
+                            local_fav_notes = 0
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-
+                            println(error.message)
                         }
                     })
-                }else{
+                } else {
                     activity.fav_list.clear()
                     notifyDataSetChanged()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                println(error.message)
             }
         })
 
@@ -123,17 +123,17 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
                         local_fav_notes--
 
                         database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_fav").setValue(local_fav_notes.toString()).addOnCompleteListener {
-                            if(it.isSuccessful){
-                                database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child((position+1).toString()).removeValue().addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child((position + 1).toString()).removeValue().addOnCompleteListener {
                                     fav_list.removeAt(position)
                                     notifyDataSetChanged()
 
                                     database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).removeValue()
 
-                                    if(local_fav_notes>0){
+                                    if (local_fav_notes > 0) {
                                         for (j in 1..local_fav_notes) {
                                             println("New amount : $j")
-                                            database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child(j.toString()).setValue(fav_list[j-1])
+                                            database.child("fav_notes").child(mAuth.currentUser?.uid.toString()).child(j.toString()).setValue(fav_list[j - 1])
 
 
                                         }
@@ -146,7 +146,7 @@ class FavoritesFragmentAdapter(var fav_list: ArrayList<Note>, val activity: Main
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                        println(error.message)
                     }
                 })
             }
