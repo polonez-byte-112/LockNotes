@@ -27,4 +27,7 @@ Export project from Zip and Import full folder
  <img src="gif-1.gif" width="270px">
 </p>
 
+<p align="center">
+ <img src="firebase.png" width="470px">
+</p>
 
