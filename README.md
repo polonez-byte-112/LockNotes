@@ -1,4 +1,4 @@
-﻿#📓 LockNotes
+# 📓 LockNotes
 Notepad connected to Firebase,
 In this App You can save Notes and pick Your Favorites
 
