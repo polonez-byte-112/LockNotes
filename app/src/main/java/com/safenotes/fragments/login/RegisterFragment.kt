@@ -67,7 +67,15 @@ class RegisterFragment : Fragment() {
                             }
 
                         }
-                        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, WalkthroughFragment())?.commit()
+
+                        var count = (activity as MainActivity).supportFragmentManager.backStackEntryCount
+
+                        for (i in 0..count)
+                        {
+                            (activity as MainActivity).supportFragmentManager.popBackStack()
+                        }
+
+                        activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left,R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left)?.replace(R.id.fragment_container, WalkthroughFragment())?.commit()
                         //Dodac tez do firebase db
                     }else{
                         Toast.makeText(requireContext(), "Error while adding User", Toast.LENGTH_SHORT).show()
@@ -114,10 +122,4 @@ class RegisterFragment : Fragment() {
 
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        (activity as MainActivity).REGISTER_STATE=false
-    }
 }

@@ -26,16 +26,11 @@ class FavoritesFragment : Fragment() {
         view.favorites_recycler_view.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         view.favorites_recycler_view.adapter = adapter
         adapter.downloadFav(activity as MainActivity)
-        (activity as MainActivity).FAVORITES_STATE=true
         return view
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as MainActivity).FAVORITES_STATE=false
 
-    }
 
 
 

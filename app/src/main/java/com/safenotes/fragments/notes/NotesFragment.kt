@@ -30,17 +30,14 @@ class NotesFragment : Fragment() {
 
         view.notes_floating_btn_add_note.setOnClickListener {
             val tab = ArrayList<Note>()
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, EditNoteFragment(0,tab,0))?.commit()
+            activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up)?.addToBackStack(null)?.add(R.id.fragment_container, EditNoteFragment(0,tab,0))?.commit()
         }
 
-        (activity as MainActivity).NOTE_STATE=true
+
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as MainActivity).NOTE_STATE=false
-    }
+
 
 
 }

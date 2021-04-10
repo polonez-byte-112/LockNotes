@@ -29,13 +29,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var new_fav_list:ArrayList<Note> =  ArrayList()
     var fav_list:ArrayList<Note> =  ArrayList()
 
-    var LOGIN_STATE=false
-    var REGISTER_STATE=false
-    var WALKTHROUGH_STATE=false
-    var NOTE_STATE=false
-    var EDIT_NOTE_STATE=false
-    var FAVORITES_STATE=false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +45,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-
-
         toogle = ActionBarDrawerToggle(this, drawerLayout,findViewById(R.id.toolbar), R.string.open_menu, R.string.close_menu)
         drawerLayout.addDrawerListener(toogle)
         toogle.syncState()
@@ -66,17 +57,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(savedInstanceState==null ){
 
             if(mAuth.currentUser==null){
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
+            supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).replace(R.id.fragment_container, LoginFragment()).commit()
            }else{
-           supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+           supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).replace(R.id.fragment_container, NotesFragment()).commit()
             }
 
         }
-
-
-
-
-
 
         updateUI()
     }
@@ -87,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when(item.itemId){
             R.id.nav_login_item -> {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left,R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left).replace(R.id.fragment_container, LoginFragment()).commit()
             }
 
             R.id.nav_logout_item->{
@@ -96,17 +82,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .signOut(this) // context
                         .addOnCompleteListener {
                             updateUI()
-                            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
+                            supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).replace(R.id.fragment_container, LoginFragment()).commit()
 
 
                         }
             }
 
             R.id.nav_home_item->{
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left,R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left).replace(R.id.fragment_container, NotesFragment()).commit()
             }
             R.id.nav_fav_item->{
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FavoritesFragment()).commit()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left,R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left).replace(R.id.fragment_container, FavoritesFragment()).commit()
             }
         }
 
@@ -153,55 +139,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-    }
-
-    override fun onBackPressed() {
-        println("Register state: $REGISTER_STATE")
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-
-            if(NOTE_STATE==true){
-                NOTE_STATE=false
-                super.onBackPressed()
-            }
-
-            if(LOGIN_STATE==true){
-                LOGIN_STATE=false
-                super.onBackPressed()
-            }
-
-
-            if(WALKTHROUGH_STATE==true){
-                WALKTHROUGH_STATE=false
-                super.onBackPressed()
-            }
-
-
-            if(REGISTER_STATE==true){
-                REGISTER_STATE=false
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment()).commit()
-                LOGIN_STATE=true
-            }
-
-
-
-            if(FAVORITES_STATE==true){
-                FAVORITES_STATE=false
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
-                NOTE_STATE=true
-            }
-
-
-            if(EDIT_NOTE_STATE==true){
-                EDIT_NOTE_STATE=false
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
-                NOTE_STATE=true
-            }
-
-
-
-        }
     }
 
 }

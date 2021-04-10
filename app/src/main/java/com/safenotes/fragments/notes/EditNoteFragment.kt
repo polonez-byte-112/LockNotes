@@ -55,8 +55,10 @@ class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var positi
         //We check here if we are going to update current note
 
         if(state==1){
-            view.edit_note_title.setText(lista[position].note_name)
-            view.edit_note_text.setText(lista[position].note_text)
+            if(lista.size>0) {
+                view.edit_note_title.setText(lista[position].note_name)
+                view.edit_note_text.setText(lista[position].note_text)
+            }
         }
 
         view.edit_note_save_btn.setOnClickListener {
@@ -96,7 +98,7 @@ class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var positi
             paste_btn_behavior(view)
         }
 
-        (activity as MainActivity).EDIT_NOTE_STATE=true
+
 
         return view
     }
@@ -112,9 +114,5 @@ class EditNoteFragment(var state : Int , var lista : ArrayList<Note>, var positi
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as MainActivity).EDIT_NOTE_STATE=false
-    }
 
 }

@@ -31,8 +31,7 @@ class LoginFragment : Fragment() {
 
         view.login_jump_to_register_text_view.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                (activity as MainActivity).REGISTER_STATE=true
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, RegisterFragment())?.commit()
+                activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up)?.addToBackStack(null)?.add(R.id.fragment_container, RegisterFragment())?.commit()
             }
 
 
@@ -43,15 +42,11 @@ class LoginFragment : Fragment() {
             (viewModel as LoginFragmentViewModel).login((activity as MainActivity) ,email,password)
         }
 
-        (activity as MainActivity).LOGIN_STATE=true
+
    return view
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as MainActivity).LOGIN_STATE=false
-    }
 
 
 }

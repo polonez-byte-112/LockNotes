@@ -15,7 +15,6 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.safenotes.MainActivity
 import com.safenotes.R
 import com.safenotes.adapters.WalkthroughFragmentAdapter
 import com.safenotes.fragments.notes.NotesFragment
@@ -41,7 +40,7 @@ class WalkthroughFragment : Fragment() {
         viewPager = view.findViewById(R.id.walkthrough_ViewPager) as ViewPager
         mDotsLayout =view.findViewById(R.id.walkthrough_dots_layout) as LinearLayout
         slideAdapter = WalkthroughFragmentAdapter(requireContext())
-        (activity as MainActivity).WALKTHROUGH_STATE=true
+
         viewPager.adapter=slideAdapter
         addDots(0)
 
@@ -96,7 +95,16 @@ class WalkthroughFragment : Fragment() {
         nextBtn.setOnClickListener {
 
             if(currentPage+1==3){
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container, NotesFragment())?.commit()
+
+
+                var count = activity?.supportFragmentManager?.backStackEntryCount
+
+                for (i in 0..count!!)
+                {
+                    activity?.supportFragmentManager?.popBackStack()
+                }
+
+                activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left,R.anim.enter_from_right_to_left, R.anim.exit_from_right_to_left)?.add(R.id.fragment_container, NotesFragment())?.commit()
             }
             viewPager.currentItem = currentPage+1
 
@@ -130,11 +138,6 @@ class WalkthroughFragment : Fragment() {
 
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as MainActivity).WALKTHROUGH_STATE=false
-    }
 
 
 }

@@ -64,7 +64,7 @@ class NotesFragmentAdapter(var list: ArrayList<Note>,val activity: MainActivity)
 
 
         holder.local_settings_edit.setOnClickListener {
-            activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, EditNoteFragment(1, list, position)).commit()
+            activity.supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).addToBackStack(null).add(R.id.fragment_container, EditNoteFragment(1, list, position)).commit()
         }
 
         holder.local_settings_cancel.setOnClickListener {

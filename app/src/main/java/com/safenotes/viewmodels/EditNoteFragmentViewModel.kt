@@ -48,7 +48,13 @@ class EditNoteFragmentViewModel: ViewModel(){
                                         database.child("amounts").child(mAuth.currentUser?.uid.toString()).child("amount_amount").setValue(newAmount).addOnCompleteListener {
                                             newAmount = 0
                                             //We clear locally amount and download new one at begin of process
-                                            activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+                                            var count = activity.supportFragmentManager.backStackEntryCount
+
+                                            for (i in 0..count)
+                                            {
+                                               activity.supportFragmentManager.popBackStack()
+                                            }
+                                            activity.supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).replace(R.id.fragment_container, NotesFragment()).commit()
                                         }
 
 
@@ -134,9 +140,9 @@ class EditNoteFragmentViewModel: ViewModel(){
 
 
                                                 //We overwrite local file right now and later we will file on database
-                                                arrayList[position].note_name=title
-                                                arrayList[position].note_date=current.toString()
-                                                arrayList[position].note_text=text
+                                                mainActivity.note_list[position].note_name=title
+                                                mainActivity.note_list[position].note_date=current.toString()
+                                                mainActivity.note_list[position].note_text=text
 
 
                                                 //Update on Firebase
@@ -146,13 +152,22 @@ class EditNoteFragmentViewModel: ViewModel(){
                                                     if(it.isSuccessful){
                                                         println("We updated note!")
                                                         arrayList.clear()
+
+                                                        var count = mainActivity.supportFragmentManager.backStackEntryCount
+
+                                                        for (i in 0..count)
+                                                        {
+                                                            mainActivity.supportFragmentManager.popBackStack()
+                                                        }
+
+
+                                                        mainActivity.supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).add(R.id.fragment_container, NotesFragment()).commit()
+
                                                     }else{
                                                         println("We didnt updated note!")
                                                     }
-                                                    mainActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
-                                                }
-
-                                            }
+                                                   }
+                                                   }
                                         }
                                     }
                                 }
@@ -177,7 +192,16 @@ class EditNoteFragmentViewModel: ViewModel(){
                                     }else{
                                         println("We didnt updated note!")
                                     }
-                                    mainActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
+
+                                    var count = mainActivity.supportFragmentManager.backStackEntryCount
+
+                                    for (i in 0..count)
+                                    {
+                                        mainActivity.supportFragmentManager.popBackStack()
+                                    }
+
+
+                                    mainActivity.supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up,R.anim.enter_from_down_to_up, R.anim.exit_from_down_to_up).add(R.id.fragment_container, NotesFragment()).commit()
                                 }
                             }
 
