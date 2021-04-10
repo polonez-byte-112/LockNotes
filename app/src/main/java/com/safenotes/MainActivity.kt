@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
             if(EDIT_NOTE_STATE==true){
-                EDIT_NOTE_STATE==false
+                EDIT_NOTE_STATE=false
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NotesFragment()).commit()
                 NOTE_STATE=true
             }

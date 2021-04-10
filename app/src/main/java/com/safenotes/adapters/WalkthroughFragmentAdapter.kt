@@ -14,7 +14,7 @@ import com.safenotes.R
 class WalkthroughFragmentAdapter(val context: Context) : PagerAdapter() {
 
 
-    var slide_imgs = intArrayOf(R.drawable.ic_person,R.drawable.ic_person, R.drawable.ic_person)
+    var slide_imgs = intArrayOf(R.drawable.desc1,R.drawable.desc2,R.drawable.desc3)
     var slide_titles = arrayOf("Easy", "Fast", "Compatible")
     var slide_descs = arrayOf(
         "LockNote is usefull and easy to understand app where u can store your Notes!\nYour data is encrypted and saved on Google Servers. ",

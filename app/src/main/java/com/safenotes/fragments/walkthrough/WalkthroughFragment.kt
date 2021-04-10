@@ -124,6 +124,7 @@ class WalkthroughFragment : Fragment() {
 
         if(mDots.size>0){
             mDots[pos].setTextColor(dark_active)
+
         }
 
 
