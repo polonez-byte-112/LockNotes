@@ -18,13 +18,14 @@ class LoginFragmentViewModel:  ViewModel() {
     private lateinit var mAuth: FirebaseAuth
 
     fun login(activity: MainActivity, email : String, password: String) {
-
+        var new_email  = email.toLowerCase().trim()
+        var new_pass = password.trim()
         val context : Context = activity.applicationContext
         mAuth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-      if(checkData(context,email,password)){
-          mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+      if(checkData(context,new_email,new_pass)){
+          mAuth.signInWithEmailAndPassword(new_email, new_pass).addOnCompleteListener {
               if(it.isSuccessful){
                   activity.updateUI()
 

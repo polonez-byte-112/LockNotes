@@ -22,13 +22,13 @@ import com.safenotes.fragments.notes.NotesFragment
 
 class WalkthroughFragment : Fragment() {
 
-    private    var currentPage : Int=0
-    private    lateinit var slideAdapter : WalkthroughFragmentAdapter
-    private    lateinit var mDots: Array<TextView>
-    private    lateinit var viewPager: ViewPager
-    private    lateinit var mDotsLayout: LinearLayout
-    private  lateinit var nextBtn  : Button
-    private  lateinit var backBtn  : Button
+    private var currentPage : Int=0
+    private lateinit var slideAdapter : WalkthroughFragmentAdapter
+    private lateinit var mDots: Array<TextView>
+    private lateinit var viewPager: ViewPager
+    private lateinit var mDotsLayout: LinearLayout
+    private lateinit var nextBtn  : Button
+    private lateinit var backBtn  : Button
     private lateinit var database: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
 
@@ -55,7 +55,6 @@ class WalkthroughFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 addDots(position)
                 currentPage = position
-
                 val lastOne = mDots.size-1
                 println("Lastone : $lastOne")
 

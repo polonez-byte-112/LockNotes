@@ -39,14 +39,9 @@ class RegisterFragment : Fragment() {
 
         view.register_continue_btn.setOnClickListener {
             //Sprawdzenie danych dodac
-            var email = register_input_email.text.toString()
-            var password = register_input_password.text.toString()
-            var passwordTwo = register_input_again_password.text.toString()
-            email.toLowerCase().capitalize()
-            password.toLowerCase().capitalize()
-            passwordTwo.toLowerCase().capitalize()
-
-
+            var email = register_input_email.text.toString().toLowerCase().trim()
+            var password = register_input_password.text.toString().trim()
+            var passwordTwo = register_input_again_password.text.toString().trim()
 
 
             if(checkData(email,password, passwordTwo)){
@@ -100,7 +95,8 @@ class RegisterFragment : Fragment() {
                                         }else{
                                             //Teraz Sprawdzamy email
 
-                                               var isValidEmail = !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+                                               var isValidEmail = !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
 
                                             if(isValidEmail==false){
                                                 Toast.makeText(requireContext(), "Wrong email", Toast.LENGTH_SHORT).show()
